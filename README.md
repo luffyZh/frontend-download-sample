@@ -6,8 +6,33 @@
 
 ## 纯前端下载形式
 
+**演示Demo**
+
+```
+  第一步： npm install -g http-server
+
+  第二步： 进入工程目录
+
+  第三步： $ http-server
+
+  第四步： 浏览器输入 http://127.0.0.1:8080/
+
+```
 
 
 ### 基于a标签下载
 
+### 基于location&iframe下载
+
 ## node端配合下载（大前端）
+
+```
+  第一步： cd node-demo
+
+  第二步： yarn install
+
+  第三步： yarn dev
+
+  第四步： 在浏览器 http://localhost:3006/查看Demo
+
+```
