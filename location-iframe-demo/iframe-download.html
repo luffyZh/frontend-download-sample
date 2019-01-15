@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+  <title>Iframe下载</title>
+  <style>
+    .container {
+      position: absolute;
+      padding: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <a id='downloadImageUrl' class="button is-info">Location下载图片</a>
+    <a id='downloadFileUrl' class="button is-dark">Location下载文件</a>
+  </div>
+</body>
+<script src='../util.js'></script>
+<script>
+  const image = new Image();  
+  image.setAttribute("crossOrigin",'Anonymous');
+  image.src = '../files/test-download.png' + '?' + new Date().getTime();
+  image.onload = function() {  
+    const imageDataUrl = image2base64(image);
+    const downloadImageUrlDom = document.getElementById('downloadImageUrl');
+    downloadImageUrlDom.addEventListener('click', function () {
+      download(imageDataUrl);
+    });
+  }
+  document.getElementById('downloadFileUrl').addEventListener('click', function () {
+    const filePath = '../files/test-download.xlsx';
+    download(filePath);
+  });
+</script>
+</html>
