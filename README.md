@@ -24,15 +24,22 @@
 
 ### 基于location&iframe下载
 
+### 前端下载利器[FileSaver](https://github.com/eligrey/FileSaver.js)
+
 ## node端配合下载（大前端）
 
+**演示Demo**
 ```
   第一步： cd node-demo
 
   第二步： yarn install
 
-  第三步： yarn dev
+  第三步： yarn start
 
-  第四步： 在浏览器 http://localhost:3006/查看Demo
+  第四步： 在浏览器 http://localhost:3006/ 查看Demo
 
 ```
+
+### 基于fs模块下载(先下载到本地再下载到浏览器)
+
+### 基于管道方式下载(直接从管道流向浏览器下载) => [推荐]
