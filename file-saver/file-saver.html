@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+  <title>FileSaver下载</title>
+  <style>
+    body {
+      padding-bottom: 240px;
+    }
+    .container {
+      position: relative;
+      width: 60%;
+      margin: 0 20%;
+      padding: 20px 0;
+      min-width: 700px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #canvas {
+      border: 1px solid #999;
+    }
+    #canvas:hover {
+      cursor: crosshair
+    }
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    p {
+      margin: 8px 0;
+    }
+    .download-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+    .download-container .name-container {
+      display: flex;
+      align-items: flex-end;
+    }
+    .input {
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>FileSaver -- canvas绘图下载</h2>
+    <canvas id="canvas" width="600" height="400" style="background-color: #fff;"></canvas>
+    <div class='download-container'>
+      <div class='name-container'>
+        <input
+          id="canvasName"
+          class="input"
+          type="text"
+          placeholder="canvas-download"
+        >.png
+      </div>
+      <a id='download-canvas' class='button is-info'>canvas下载</a>
+    </div>
+    <h2>FileSaver -- 直接下载图片</h2>
+    <p>获取图片 --> 转换成Blob数据 --> 下载</p>
+    <a id='download-image' class='button is-warning'>image下载</a>
+    <h2>FileSaver -- 下载文本文件</h2>
+    <textarea
+      id="textarea"
+      class="textarea"
+      placeholder="请输入文本内容..."
+    ></textarea>
+    <div class='download-container'>
+      <div class='name-container'>
+        <input
+          id="textareaName"
+          class="input"
+          type="text"
+          placeholder="textarea-download"
+        >.txt
+      </div>
+      <a id='download-txt' class='button is-dark'>txt文件下载</a>
+    </div>
+    <h2>FileSaver -- 下载Excel文件</h2>
+    <p>构造数据 --> 使用js-xlsx生成excel文件的数据 --> 转换成Blob数据 --> 下载</p>
+    <table id='table-excel' class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+      <thead>
+        <tr>
+          <th>One</th>
+          <th>Two</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Three</td>
+          <td>Four</td>
+        </tr>
+        <tr>
+          <td>Five</td>
+          <td>Six</td>
+        </tr>
+        <tr>
+          <td>Seven</td>
+          <td>Eight</td>
+        </tr>
+        <tr>
+          <td>Nine</td>
+          <td>Ten</td>
+        </tr>
+        <tr>
+          <td>Eleven</td>
+          <td>Twelve</td>
+        </tr>
+      </tbody>
+    </table>
+    <a id='download-excel' class='button is-danger'>excel文件下载</a>
+  </div>
+</body>
+<script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.min.js"></script>
+<script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+<script src="https://cdn.bootcss.com/xlsx/0.14.1/shim.min.js"></script>
+<script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+<script src='../util.js'></script>
+<script src='./canvas.js'></script>
+<script>
+  /* 下载canvas */
+  function generateFilename(id, mime) {
+    const filename = document.getElementById(id).value || document.getElementById(id).placeholder;
+    return filename + mime;
+  }
+  const canvasDownloadDom = document.getElementById('download-canvas');
+  canvasDownloadDom.addEventListener('click', () => {
+    const canvas = document.getElementById('canvas');
+    const filename = generateFilename('canvasName', '.png');
+    if (canvas.toBlob) {
+      canvas.toBlob(
+          function (blob) {
+            saveAs(blob, filename);
+          },
+          'image/png'
+      );
+    }   
+  });
+
+  // FileSaver 下载图片文件
+  const image = new Image();  
+  image.setAttribute("crossOrigin",'Anonymous');
+  image.src = '../files/test-download.png' + '?' + new Date().getTime();
+  image.onload = function() {  
+    const imageDataUrl = image2base64(image);
+    const imageBlobData = dataUrl2Blob(imageDataUrl);
+    const downloadImageDom = document.getElementById('download-image');
+    downloadImageDom.addEventListener('click', () => {
+      saveAs(imageBlobData, 'test-download.png');
+    });
+  }
+
+  // FileSaver 下载文本文件
+  const txtDownloadDom = document.getElementById('download-txt');
+  txtDownloadDom.addEventListener('click', () => {
+    const textarea = document.getElementById('textarea');
+    const filename = generateFilename('textareaName', '.txt');
+    const textBlob = new Blob([textarea.value], {type: "text/plain;charset=utf-8"});
+    saveAs(textBlob, filename);
+  });
+
+  // 下载excel文件
+  const excelDownloadDom = document.getElementById('download-excel');
+  excelDownloadDom.addEventListener('click', () => {
+    const wb = XLSX.utils.table_to_book(document.querySelector('#table-excel'));
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' });
+    try {
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'table-excel.xlsx');
+    } catch (e) {
+      if (typeof console !== 'undefined') console.log(e, wbout)
+    }
+  });
+</script>
+</html>

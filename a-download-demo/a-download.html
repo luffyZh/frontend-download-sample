@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.bootcss.com/bulma/0.7.2/css/bulma.min.css" rel="stylesheet">
+  <title>a标签下载</title>
+  <style>
+    .container {
+      position: absolute;
+      padding: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <a class="button is-primary" href="../files/test-download.png" download="test-download">a标签下载png图片文件</a>
+    <a class="button is-success" href="../files/test-download.xlsx" download="test-download">a标签下载xlsx表格文件</a>
+    <a class="button is-info" href="../files/test-download.txt" download="test-download">a标签下载txt文本文件</a>
+    <a class="button is-warning" href="../files/test-download.apk" download="test-download">a标签下载apk安装包文件</a>
+    <a id='downloadDataUrl' class="button is-dark">下载dataUrl图片</a>
+    <a id='downloadBlobUrl' class="button is-danger">下载blobUrl图片</a>
+  </div>
+</body>
+<script src='../util.js'></script>
+<script>
+  const image = new Image();  
+  image.setAttribute("crossOrigin",'Anonymous');
+  image.src = '../files/test-download.png' + '?' + new Date().getTime();
+  image.onload = function() {  
+    const imageDataUrl = image2base64(image);  
+    const downloadDataUrlDom = document.getElementById('downloadDataUrl');
+    downloadDataUrlDom.setAttribute('href', imageDataUrl);
+    downloadDataUrlDom.setAttribute('download', 'download-data-url.png');
+    downloadDataUrlDom.addEventListener('click', () => {
+      console.log('下载文件');
+    });
+  }
+  const image2 = new Image();  
+  image2.setAttribute("crossOrigin",'Anonymous');
+  image2.src = '../files/test-download.png' + '?' + new Date().getTime();
+  image2.onload = function() {  
+    const imageDataUrl = image2base64(image2);
+    const imageBlobData = dataUrl2Blob(imageDataUrl);
+    const downloadDataUrlDom = document.getElementById('downloadBlobUrl');
+    downloadDataUrlDom.setAttribute('href', URL.createObjectURL(imageBlobData));
+    downloadDataUrlDom.setAttribute('download', 'download-data-url.png');
+    downloadDataUrlDom.addEventListener('click', () => {
+      console.log('下载文件');
+    });
+  }
+</script>
+</html>

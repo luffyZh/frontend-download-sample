@@ -20,9 +20,7 @@ function init() {
     return;
   }
 
-  /**
-   * get the 2D canvas context.
-   */
+  // 初始化画布
   context = canvas.getContext('2d');
   if (!context) {
     return;
@@ -32,40 +30,31 @@ function init() {
   context.fillStyle = '#fff';
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  /**
-   * pencil tool instance.
-   */
-  tool = new tool_pencil();
+  // 初始化画笔
+  tool = new toolPencil();
 
   /**
-   * attach the mousedown, mousemove and mouseup event listeners.
+   * 监听鼠标移动事件，进行绘图
    */
-  canvas.addEventListener('mousedown', ev_canvas, false);
-  canvas.addEventListener('mousemove', ev_canvas, false);
-  canvas.addEventListener('mouseup', ev_canvas, false);
+  canvas.addEventListener('mousedown', evCanvas, false);
+  canvas.addEventListener('mousemove', evCanvas, false);
+  canvas.addEventListener('mouseup', evCanvas, false);
 
 }
 
 /**
- * This painting tool 
- * works like a drawing pencil 
- * which tracks the mouse movements.
- * 
- * @returns {tool_pencil}
+ * 画笔构造函数
+ * @returns {toolPencil}
  */
-function tool_pencil() {
+function toolPencil() {
   var tool = this;
   this.started = false;
-
   /**
-   * This is called when you start holding down the mouse button.
-   * This starts the pencil drawing.
+   * 监听鼠标摁下事件
    */
   this.mousedown = function (ev) {
     /**
-     * when you click on the canvas and drag your mouse
-     * the cursor will changes to a text-selection cursor
-     * the "ev.preventDefault()" can prevent this.
+     * 开始绘制
      */
     ev.preventDefault();
     context.beginPath();
@@ -74,8 +63,7 @@ function tool_pencil() {
   };
 
   /**
-   * This is called every time you move the mouse.
-   * Obviously, it only draws if the tool.started state is set to true
+   * 如果已经开始绘制，监听鼠标移动，继续绘制
    */
   this.mousemove = function (ev) {
     if (tool.started) {
@@ -85,7 +73,7 @@ function tool_pencil() {
   };
 
   /**
-   * This is called when you release the mouse button.
+   * 结束绘制.
    */
   this.mouseup = function (ev) {
     if (tool.started) {
@@ -96,20 +84,18 @@ function tool_pencil() {
 }
 
 /**
- * general-purpose event handler.
- * determines the mouse position relative to the canvas element.
+ * 处理鼠标移动位置相对于画布的位置
  * 
  * @param ev
  */
-function ev_canvas(ev) {
+function evCanvas(ev) {
   var x, y;
   if (ev.offsetX || ev.offsetY == 0) {
     ev._x = ev.offsetX;
     ev._y = ev.offsetY;
   }
-
   /**
-   * call the event handler of the tool.
+   * 执行三个监听函数 mousedown, mouseup, mousemove
    */
   var func = tool[ev.type];
   if (func) {
