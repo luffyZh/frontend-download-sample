@@ -79,5 +79,6 @@ module.exports = withLess({
     // console.log(config, '@@')
     // Important: return the modified config
     return config;
-  }
+  },
+  rootDir: path.join(__dirname) // 系统根目录
 });

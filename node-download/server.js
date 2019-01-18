@@ -1,6 +1,7 @@
 const express = require('express');
 const cp = require('child_process');
 const next = require('next');
+const downloadHandler = require('./middlewares/server/downloadHandler');
 
 const port = parseInt(process.env.PORT, 10) || 3006;
 // 判断开发环境和生产环境
@@ -21,6 +22,8 @@ app.prepare()
       const { username } = req.params;
       return app.render(req, res, '/user/userDetail', { username });
     });
+
+    server.use('/download/:type', downloadHandler);
 
     server.get('*', (req, res) => {
       return handle(req, res);

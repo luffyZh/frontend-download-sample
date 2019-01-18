@@ -19,6 +19,9 @@ const Home = () => (
         </div>
       }
     />
+    <Link href='/download'>
+      <Button type='primary'>下载页</Button>
+    </Link>
   </Fragment>
 );
 export default Home;

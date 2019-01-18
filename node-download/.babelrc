@@ -1,13 +1,17 @@
 
 {
-  "presets": ["next/babel"],
-  "plugins": [
+  "presets": [
+    "next/babel",
     [
-      "@babel/plugin-proposal-decorators",
+      "@babel/preset-env",
       {
-        "decoratorsBeforeExport": true
+        "targets": {
+          "node": "current"
+        }
       }
-    ],
+    ]
+  ],
+  "plugins": [
     [
       "import",
       {

@@ -8,7 +8,8 @@ export const RoleType = {
 export const RouterTitle = {
   '/': '首页',
   '/user/userList': '用户列表',
-  '/user/userDetail': '用户详情'
+  '/user/userDetail': '用户详情',
+  '/download': '测试下载页'
 };
 
 export const TagsArray = [
