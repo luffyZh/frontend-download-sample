@@ -37,7 +37,6 @@
     "react/sort-comp": 1,
     "react/no-string-refs": 0,
     "react/prefer-stateless-function": 0,
-    "react/prop-types": 2,
     "react/require-default-props": [2, { "forbidDefaultForRequired": true }],
     "jsx-a11y/no-static-element-interactions": 0,
     "keyword-spacing": [2, { "before": true }],
