@@ -24,6 +24,10 @@ export default class index extends Component {
     download('/download/pipePackage');
   }
 
+  downloadZip = () => {
+    download('/download/zipFile');
+  }
+
   render() {
     return (
       <div className='download-container'>
@@ -46,6 +50,9 @@ export default class index extends Component {
         <div className='btn-container'>
           <Button onClick={this.pipeDownloadExcel} type='primary'>buffer/pipe下载Excel文件</Button>
           <Button onClick={this.pipeDownloadPackage} type='primary' ghost>buffer/pipe下载安装包</Button>
+        </div>
+        <div className='btn-container'>
+          <Button onClick={this.downloadZip}>下载 zip 文件</Button>
         </div>
       </div>
     );
